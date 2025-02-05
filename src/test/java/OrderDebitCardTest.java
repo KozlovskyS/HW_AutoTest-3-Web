@@ -62,6 +62,19 @@ public class OrderDebitCardTest {
     }
 
     @Test
+    public void testErrorSendFormEmptyFieldName() {
+//        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Ivan");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+71230012345");
+        driver.findElement(By.cssSelector("[data-test-id ='agreement']")).click();
+        driver.findElement(By.className("button")).click();
+
+        WebElement result = driver.findElement(By.cssSelector(".input_invalid[data-test-id='name'] span.input__sub"));
+
+        assertTrue(result.isDisplayed());
+        assertEquals("Поле обязательно для заполнения", result.getText().trim());
+    }
+
+    @Test
     public void testErrorSendFormInvalidSymbolToPhone() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("71230012345");
@@ -72,5 +85,31 @@ public class OrderDebitCardTest {
 
         assertTrue(result.isDisplayed());
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", result.getText().trim());
+    }
+
+    @Test
+    public void testErrorSendFormEmptyFieldPhone() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
+//        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("71230012345");
+        driver.findElement(By.cssSelector("[data-test-id ='agreement']")).click();
+        driver.findElement(By.className("button")).click();
+
+        WebElement result = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] span.input__sub"));
+
+        assertTrue(result.isDisplayed());
+        assertEquals("Поле обязательно для заполнения", result.getText().trim());
+    }
+
+    @Test
+    public void testErrorSendNoCheckBoxLabel() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+71230012345");
+//        driver.findElement(By.cssSelector("[data-test-id ='agreement']")).click();
+        driver.findElement(By.className("button")).click();
+
+        WebElement result = driver.findElement(By.cssSelector(".input_invalid[data-test-id='agreement'] span.checkbox__text"));
+
+        assertTrue(result.isDisplayed());
+        assertEquals("Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй", result.getText().trim());
     }
 }
